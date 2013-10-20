@@ -14,6 +14,11 @@
       "git": "git://github.com/fnichol/chef-rvm.git",
       "ref": "59dc482e2c39db4c378e79e10569f1becdc4bc43"
     },
+    "ruby_build": {
+      "locked_version": "0.8.1",
+      "git": "git://github.com/fnichol/chef-ruby_build.git",
+      "ref": "4d3361995a6953076951693eff1b326ab499fe1e"
+    },
     "nginx": {
       "locked_version": "2.0.0"
     },
@@ -22,6 +27,18 @@
     },
     "application_ruby": {
       "locked_version": "2.1.4"
+    },
+    "chef-solo-search": {
+      "locked_version": "0.5.1"
+    },
+    "git": {
+      "locked_version": "2.7.0"
+    },
+    "database": {
+      "locked_version": "1.5.2"
+    },
+    "testapp": {
+      "path": "./cookbooks/testapp"
     },
     "java": {
       "locked_version": "1.14.0"
@@ -70,6 +87,15 @@
     },
     "logrotate": {
       "locked_version": "1.4.0"
+    },
+    "dmg": {
+      "locked_version": "2.0.4"
+    },
+    "mysql": {
+      "locked_version": "3.0.12"
+    },
+    "xfs": {
+      "locked_version": "1.1.0"
     }
   }
 }

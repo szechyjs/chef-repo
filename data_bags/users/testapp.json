@@ -1,0 +1,7 @@
+{
+    "id": "testapp",
+    "password": "$1$z4DjC48x$DyORJB8x/aFDWcWNNcUdW0",
+    "groups": [ "deploy" ],
+    "shell": "\/bin\/bash",
+    "comment": "Test App user"
+}

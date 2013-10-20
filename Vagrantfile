@@ -82,14 +82,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # path, and data_bags path (all relative to this Vagrantfile), and adding
   # some recipes and/or roles.
   #
+
+  config.omnibus.chef_version = :latest
+  config.berkshelf.enable = true
+
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = "cookbooks"
     chef.roles_path = "roles"
     chef.data_bags_path = "data_bags"
-    chef.add_role "assetmgr"
+    chef.add_role "testapp"
 
-    # You may also specify custom JSON attributes:
-    # chef.json = { :mysql_password => "foo" }
+    chef.json = { :postgresql => { :password => { :postgres => "password" } } }
   end
 
   # Enable provisioning with chef server, specifying the chef server URL,

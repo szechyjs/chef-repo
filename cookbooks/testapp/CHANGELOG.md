@@ -1,11 +1,11 @@
-assetmgr CHANGELOG
+testapp CHANGELOG
 ==================
 
-This file is used to list changes made in each version of the assetmgr cookbook.
+This file is used to list changes made in each version of the testapp cookbook.
 
 0.1.0
 -----
-- [jared] - Initial release of assetmgr
+- [jared] - Initial release of testapp
 
 - - -
 Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.
