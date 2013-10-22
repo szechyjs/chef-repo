@@ -37,13 +37,15 @@ end
 
 include_recipe 'postgresql::ruby'
 
+db_password = node[:postgresql][:password][:postgres]
+
 postgresql_database 'testapp' do
 
   connection(
     :host     => '127.0.0.1',
     :port     => 5432,
     :username => 'postgres',
-    :password => node ? node['postgresql']['password']['postgres'] : 'password'
+    :password => db_password
   )
   owner 'postgres'
   action :create
@@ -70,7 +72,7 @@ application "testapp" do
       host "localhost"
       database "testapp"
       username "postgres"
-      password node ? node['postgresql']['password']['postgres'] : "password"
+      password "#{db_password}"
     end
   end
 
