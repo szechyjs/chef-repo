@@ -12,5 +12,6 @@ cookbook 'application_ruby'
 cookbook 'chef-solo-search'
 cookbook 'git'
 cookbook 'database'
+cookbook 'chef-client'
 
 cookbook 'testapp', path: 'cookbooks/testapp'

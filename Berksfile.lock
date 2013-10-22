@@ -40,6 +40,9 @@
     "database": {
       "locked_version": "1.5.2"
     },
+    "chef-client": {
+      "locked_version": "3.1.0"
+    },
     "testapp": {
       "path": "./cookbooks/testapp"
     },
@@ -96,6 +99,9 @@
     },
     "xfs": {
       "locked_version": "1.1.0"
+    },
+    "cron": {
+      "locked_version": "1.2.8"
     }
   }
 }
