@@ -91,15 +91,45 @@ task :deploy do
   case type
     when "ec2"
       instance_type = "t1.micro"
-      image = "ami-b9a2f0d0"
+      image = "ubuntu1204"
+      ami = "ami-b9a2f0d0"
       user = "ubuntu"
+      zone = "us-east-1d"
+      region = "us-east-1"
+
+      zone_ami = {
+        "us-east-1d" => {
+          "ubuntu1204" => "ami-a73264ce",
+          "ubuntu1304" => "ami-ad83d7c4",
+          "centos6" => "ami-eb6b0182"
+        },
+        "us-west-1b" => {
+          "ubuntu1204" => "ami-acf9cde9",
+          "ubuntu1304" => "ami-7e37033b",
+          "centos6" => "ami-b9341afc"
+        },
+        "us-west-2a" => {
+          "ubuntu1204" => "ami-6aad335a",
+          "ubuntu1304" => "ami-12fe6022",
+          "centos6" => "ami-b158c981"
+        }
+      }
+
+      choose do |menu|
+        menu.prompt = "Please select an availability zone: "
+        menu.choice :us_east_1 do zone = "us-east-1d"; region = "us-east-1" end
+        menu.choice :us_west_1 do zone = "us-west-1b"; region = "us-west-1" end
+        menu.choice :us_west_2 do zone = "us-west-2a"; region = "us-west-2" end
+      end
 
       choose do |menu|
         menu.prompt = "Please select an image: "
-        menu.choice :ubuntu1204 do image = "ami-b9a2f0d0" end
-        menu.choice :ubuntu1304 do image = "ami-41451828" end
-        menu.choice :centos6 do image = "ami-eb6b0182"; user = "root" end
+        menu.choice :ubuntu1204 do image = "ubuntu1204" end
+        menu.choice :ubuntu1304 do image = "ubuntu1304" end
+        menu.choice :centos6 do image = "centos6"; user = "root" end
       end
+
+      ami = zone_ami[zone][image]
 
       choose do |menu|
         menu.prompt = "Please select an instance type: "
@@ -110,11 +140,18 @@ task :deploy do
         menu.choice :xlarge do instance_type = "m1.xlarge" end
       end
 
-      cmd = "knife ec2 server create --node-name #{node_name} --run-list \"role[#{role}]\" --flavor #{instance_type} --image #{image} --ssh-user #{user} --identity-file ~/.chef/ec2.pem --tags Role=#{role},Owner=#{Etc.getlogin},ManagedBy=chef"
+      spot_price = ask("Enter spot request price in USD (0 for regular instance): ", Float) do |q|
+        q.default = 0
+      end
+
+      spot_tag = spot_price != 0 ? "--spot-price #{spot_price}" : ""
+
+      cmd = "knife ec2 server create --node-name #{node_name} --run-list \"role[#{role}]\" --flavor #{instance_type} --availability-zone #{zone} --region #{region} --image #{ami} --ssh-user #{user} --identity-file ~/.chef/ec2.pem --tags Role=#{role},Owner=#{Etc.getlogin},ManagedBy=chef #{spot_tag}"
 
     when "vsphere"
     when "xen"
   end
 
+  puts cmd
   system cmd
 end
