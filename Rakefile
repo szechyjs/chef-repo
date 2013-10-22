@@ -22,6 +22,7 @@ require 'rubygems'
 require 'chef'
 require 'json'
 require 'highline/import'
+require 'etc'
 
 # Load constants from rake config file.
 require File.join(File.dirname(__FILE__), 'config', 'rake')
@@ -109,7 +110,7 @@ task :deploy do
         menu.choice :xlarge do instance_type = "m1.xlarge" end
       end
 
-      cmd = "knife ec2 server create --node-name #{node_name} --run-list \"role[#{role}]\" --flavor #{instance_type} --image #{image} --ssh-user #{user} --identity-file ~/.chef/ec2.pem"
+      cmd = "knife ec2 server create --node-name #{node_name} --run-list \"role[#{role}]\" --flavor #{instance_type} --image #{image} --ssh-user #{user} --identity-file ~/.chef/ec2.pem --tags Role=#{role},Owner=#{Etc.getlogin},ManagedBy=chef"
 
     when "vsphere"
     when "xen"
