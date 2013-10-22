@@ -19,6 +19,4 @@ cookbook_email "jared.szechy@gmail.com"
 knife[:aws_access_key_id] = ENV['AWS_ACCESS_KEY_ID']
 knife[:aws_secret_access_key] = ENV['AWS_SECRET_ACCESS_KEY']
 knife[:aws_ssh_key_id] = ENV['AWS_SSH_KEY_ID']
-knife[:availability_zone] = "us-east-1d"
-knife[:image] = "ami-a73264ce"
 
