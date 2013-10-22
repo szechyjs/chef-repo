@@ -183,4 +183,5 @@ PLATFORMS
 DEPENDENCIES
   berkshelf
   chef
+  highline
   knife-ec2

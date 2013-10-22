@@ -21,6 +21,7 @@
 require 'rubygems'
 require 'chef'
 require 'json'
+require 'highline/import'
 
 # Load constants from rake config file.
 require File.join(File.dirname(__FILE__), 'config', 'rake')
@@ -62,4 +63,57 @@ task :bundle_cookbook, :cookbook do |t, args|
   system("tar", "-C", temp_dir, "-cvzf", File.join(tarball_dir, tarball_name), "#{args.cookbook}")
 
   FileUtils.rm_rf temp_dir
+end
+
+desc "Deploy a new node"
+task :deploy do
+  type = ""
+  role = "basic"
+
+  choose do |menu|
+    menu.prompt = "Please choose a destination to deploy to: "
+    menu.choice :ec2 do type = "ec2" end
+    menu.choice :vsphere do type = "vsphere" end
+    menu.choice :xen do type = "xen" end
+  end
+
+  choose do |menu|
+    menu.prompt = "Please choose a role for the node: "
+    menu.choice :basic do role = "basic" end
+    menu.choice :nginx do role = "nginx" end
+    menu.choice :postgresql do role = "postgresql" end
+    menu.choice :testapp do role = "testapp" end
+  end
+
+  node_name = ask("Enter the name of the node: ") {|q| q.default = "new-node" }
+
+  case type
+    when "ec2"
+      instance_type = "t1.micro"
+      image = "ami-b9a2f0d0"
+      user = "ubuntu"
+
+      choose do |menu|
+        menu.prompt = "Please select an image: "
+        menu.choice :ubuntu1204 do image = "ami-b9a2f0d0" end
+        menu.choice :ubuntu1304 do image = "ami-41451828" end
+        menu.choice :centos6 do image = "ami-eb6b0182"; user = "root" end
+      end
+
+      choose do |menu|
+        menu.prompt = "Please select an instance type: "
+        menu.choice :micro do instance_type = "t1.micro" end
+        menu.choice :small do instance_type = "m1.small" end
+        menu.choice :medium do instance_type = "m1.medium" end
+        menu.choice :large do instance_type = "m1.large" end
+        menu.choice :xlarge do instance_type = "m1.xlarge" end
+      end
+
+      cmd = "knife ec2 server create --node-name #{node_name} --run-list \"role[#{role}]\" --flavor #{instance_type} --image #{image} --ssh-user #{user} --identity-file ~/.chef/ec2.pem"
+
+    when "vsphere"
+    when "xen"
+  end
+
+  system cmd
 end
