@@ -1,6 +1,7 @@
 site :opscode
 
 cookbook 'apt'
+cookbook 'yum'
 cookbook 'build-essential'
 cookbook 'users'
 cookbook 'rvm', github: 'fnichol/chef-rvm'
